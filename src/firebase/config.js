@@ -2,7 +2,7 @@
 import firebase from "firebase/compat/app";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup ,signOut,signInWithRedirect,onAuthStateChanged} from "firebase/auth";
 import "firebase/compat/storage";
 import "firebase/compat/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -25,18 +25,8 @@ const projectStorage = firebase.storage();
 const projDB = firebase.firestore();
 const timestamp = firebase.firestore.Timestamp;
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 
-const googleSignIn = () => {
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      alert("error with Google Login.");
-    });
-};
 
-export { storage, projectStorage, projDB, timestamp, auth, googleSignIn };
+
+export {app, storage, projectStorage, projDB, timestamp, auth };
 export default getFirestore();

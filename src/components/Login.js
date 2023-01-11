@@ -1,9 +1,26 @@
-import React from "react";
-import { googleSignIn } from "../firebase/config";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {UserAuth} from '../context/AuthContext.js';
 const Login = () => {
+  const {googleSignIn,user} = UserAuth();
+ 
+  const navigate = useNavigate();
+  const handleGoogleSignIn = async () => {
+    try{
+      await googleSignIn();
+    } catch(error) {
+      console.log(error);
+    }
+  };
+  useEffect(()=> {
+     if (user!=null){
+      navigate('/landing');
+     }
+  },[user]);
+
   return (
     <div>
-      <button onClick={googleSignIn}>Google Sign In</button>
+      <button onClick={handleGoogleSignIn}>Google Sign In</button>
     </div>
   );
 };
