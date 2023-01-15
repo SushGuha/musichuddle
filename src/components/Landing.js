@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Button, Form } from "react-bootstrap";
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { projDB } from "../firebase/config.js";
 import { collection, query, getDocs, addDoc } from "firebase/firestore";
@@ -65,11 +66,66 @@ const Landing = () => {
     };
 
     const docRef = await addDoc(collection(projDB, "parties"), partyInfo);
-    console.log("Party officially added!");
-
+    const q = query(collection(projDB, "users"));
+      const querySnapshot = await getDocs(q);
+      let userPresent=false;
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data().currentSong);
+        if (doc.data().Name === user.displayName) {
+          userPresent = true;
+          console.log("IS PRESENT");
+        }
+      });
+      if(!userPresent){
+        const docRef = await addDoc(collection(projDB, "users"), user.displayName);
+        
+      }
+    
+    window.location.href="/party/"+partyCode;
     // Navigate to the party dashboard page
     // The call firebase to get the party info from that page.
   };
+
+  const getParty = async(e) => {
+    let partyCode = "123456";
+    let userName = "tarun";
+    let isPresent = false;
+    const q = query(collection(projDB, "parties"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data().currentSong);
+        if (doc.data().partyCode === partyCode) {
+          isPresent = true;
+          console.log("IS PRESENT");
+        }
+      });
+    if(isPresent){
+      //check if username is in the party if so add oatherwise do not add
+      const q = query(collection(projDB, "users"));
+      const querySnapshot = await getDocs(q);
+      let userPresent=false;
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data().currentSong);
+        if (doc.data().Name === userName) {
+          userPresent = true;
+          console.log("IS PRESENT");
+        }
+      });
+      if(!userPresent){
+        const docRef = await addDoc(collection(projDB, "users"), userName);
+        
+      }
+    }
+    else{
+      let errorFinding = "Party Not Found!";
+      console.log(errorFinding);
+      alert(errorFinding);
+    }
+
+  }
 
   return (
     <Container
