@@ -1,7 +1,7 @@
 import React from "react";
 
 
-
+import Dashboard from "./Dashboard.js";
 import { Button, Row, Col} from "react-bootstrap";
 import {UserAuth} from '../context/AuthContext.js';
 import { projDB } from "../firebase/config.js";
@@ -94,7 +94,7 @@ export default function Addparty({ partyCode}) {
         </br>
         
         </Col>
-        <Col xs={8} md = {8} lg = {10}>SPace for search feature dashboard</Col>
+        <Col xs={8} md = {8} lg = {10}><Dashboard/></Col>
         
       </Row>
         
